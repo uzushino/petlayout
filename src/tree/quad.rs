@@ -14,46 +14,41 @@ impl DIR {
     }
 }
 
-pub struct Tree {
-    square: Rectangle,
-    children: Vec<Tree>,
-}
-
-pub struct Rectangle {
+pub struct Tree<T> {
     pub x: f32,
     pub y: f32,
     pub width: f32,
     pub height: f32, 
+   
+    pub nodes: Vec<T>,    
+
+    children: Vec<Tree<T>>,
 }
 
-impl Rectangle {
-    pub fn new() -> Self {
-        Self {
-            x: 0.0, 
-            y: 0.0, 
-            width: 0.0, 
-            height: 0.0,
-        }
-    }
-}
+impl<T> Tree<T> {
+    pub fn new() -> Tree<T> {
+        Tree {
+            x: 0f32,
+            y: 0f32,
+            width: 0f32,
+            height: 0f32,
 
-impl Tree {
-    pub fn new() -> Self {
-        Self {
-            square: Rectangle::new(),
+            nodes: Vec::default() as Vec<T>,
             children: Vec::with_capacity(4),
         }
     }
 
-    pub fn add_child(&mut self, dir: DIR, x: f32, y: f32, w: f32, h: f32) {
+    pub fn blank_child(&mut self, dir: DIR, x: f32, y: f32, w: f32, h: f32) {
         self.children[dir.direction()] = Tree {
-            square: Rectangle {
-                x, 
-                y, 
-                width: w,
-                height: h,
-            },
+            x, 
+            y, 
+            width: w,
+            height: h,
+            nodes: Vec::default(),
             children: Vec::with_capacity(4),
         };
+    }
+
+    pub fn add_child(&mut self) {
     }
 }
