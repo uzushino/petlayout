@@ -1,15 +1,15 @@
 
-pub enum DIR {
+pub enum Position {
     NE, NW, SE, SW,
 }
 
-impl DIR {
+impl Position {
     pub fn direction(self) -> usize {
         match self {
-            DIR::NE => 0,
-            DIR::NW => 1,
-            DIR::SE => 2,
-            DIR::SW => 3,
+            Position::NE => 0,
+            Position::NW => 1,
+            Position::SE => 2,
+            Position::SW => 3,
         }
     }
 }
@@ -38,7 +38,7 @@ impl<T> Tree<T> {
         }
     }
 
-    pub fn blank_child(&mut self, dir: DIR, x: f32, y: f32, w: f32, h: f32) {
+    pub fn blank_child(&mut self, dir: Position, x: f32, y: f32, w: f32, h: f32) {
         self.children[dir.direction()] = Tree {
             x, 
             y, 
@@ -49,6 +49,17 @@ impl<T> Tree<T> {
         };
     }
 
-    pub fn add_child(&mut self) {
+    pub fn add_child(&mut self, value: &Tree<T>) {
+    }
+
+    fn is_contain(self, pos: Position, x: f32, y: f32) -> bool {
+        match pos {
+            Position::NW => self.is_nw(x, y),
+            _ => false,
+        }
+    }
+
+    fn is_nw(self, x: f32, y: f32) -> bool {
+        x >= self.x && x <= self.x + self.width && y >= self.y && y <= self.y + self.height / 2.0
     }
 }
