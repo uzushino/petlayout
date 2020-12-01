@@ -55,11 +55,26 @@ impl<T> Tree<T> {
     fn is_contain(self, pos: Position, x: f32, y: f32) -> bool {
         match pos {
             Position::NW => self.is_nw(x, y),
+            Position::NE => self.is_ne(x, y),
+            Position::SW => self.is_sw(x, y),
+            Position::SE => self.is_se(x, y),
             _ => false,
         }
     }
 
     fn is_nw(self, x: f32, y: f32) -> bool {
-        x >= self.x && x <= self.x + self.width && y >= self.y && y <= self.y + self.height / 2.0
+        x >= self.x && x <= self.x + self.width / 2.0 && y >= self.y && y <= self.y + self.height / 2.0
+    }
+    
+    fn is_ne(self, x: f32, y: f32) -> bool {
+        x >= self.x + self.width / 2.0 && x <= self.x + self.width && y >= self.y && y <= self.y + self.height / 2.0
+    }
+    
+    fn is_sw(self, x: f32, y: f32) -> bool {
+        x >= self.x && x <= self.x + self.width / 2.0 && y >= self.y + self.height / 2.0 && y <= self.y
+    }
+    
+    fn is_se(self, x: f32, y: f32) -> bool {
+        x >= self.x + self.width / 2.0 && x <= self.x + self.width && y >= self.y + self.height / 2.0 && y <= self.y + self.height
     }
 }
