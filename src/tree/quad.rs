@@ -50,6 +50,12 @@ impl<T> Tree<T> {
     }
 
     pub fn add_child(&mut self, value: &Tree<T>) {
+        if self.is_contain(Position::NW, value.x, value.y) {
+            self.children[Position::NW.direction()].add_child(value);
+        }
+        if self.is_contain(Position::NE, value.x, value.y) {
+            self.children[Position::NE.direction()].add_child(value);
+        }
     }
 
     fn is_contain(self, pos: Position, x: f32, y: f32) -> bool {
