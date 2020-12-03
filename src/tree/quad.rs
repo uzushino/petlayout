@@ -52,13 +52,16 @@ impl<T> Tree<T> {
     pub fn add_child(&mut self, value: &Tree<T>) {
         if self.is_contain(Position::NW, value.x, value.y) {
             self.children[Position::NW.direction()].add_child(value);
-        }
-        if self.is_contain(Position::NE, value.x, value.y) {
+        } else if self.is_contain(Position::NE, value.x, value.y) {
             self.children[Position::NE.direction()].add_child(value);
+        } else if self.is_contain(Position::SE, value.x, value.y) {
+            self.children[Position::SE.direction()].add_child(value);
+        } else if self.is_contain(Position::SW, value.x, value.y) {
+            self.children[Position::SW.direction()].add_child(value);
         }
     }
 
-    fn is_contain(self, pos: Position, x: f32, y: f32) -> bool {
+    fn is_contain(&self, pos: Position, x: f32, y: f32) -> bool {
         match pos {
             Position::NW => self.is_nw(x, y),
             Position::NE => self.is_ne(x, y),
@@ -68,19 +71,19 @@ impl<T> Tree<T> {
         }
     }
 
-    fn is_nw(self, x: f32, y: f32) -> bool {
+    fn is_nw(&self, x: f32, y: f32) -> bool {
         x >= self.x && x <= self.x + self.width / 2.0 && y >= self.y && y <= self.y + self.height / 2.0
     }
     
-    fn is_ne(self, x: f32, y: f32) -> bool {
+    fn is_ne(&self, x: f32, y: f32) -> bool {
         x >= self.x + self.width / 2.0 && x <= self.x + self.width && y >= self.y && y <= self.y + self.height / 2.0
     }
     
-    fn is_sw(self, x: f32, y: f32) -> bool {
+    fn is_sw(&self, x: f32, y: f32) -> bool {
         x >= self.x && x <= self.x + self.width / 2.0 && y >= self.y + self.height / 2.0 && y <= self.y
     }
     
-    fn is_se(self, x: f32, y: f32) -> bool {
+    fn is_se(&self, x: f32, y: f32) -> bool {
         x >= self.x + self.width / 2.0 && x <= self.x + self.width && y >= self.y + self.height / 2.0 && y <= self.y + self.height
     }
 }
