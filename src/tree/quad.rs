@@ -1,6 +1,6 @@
 
 pub enum Position {
-    NE, NW, SE, SW,
+    NE, NW, SE, SW, None
 }
 
 impl Position {
@@ -10,64 +10,56 @@ impl Position {
             Position::NW => 1,
             Position::SE => 2,
             Position::SW => 3,
+            Position::None => 4,
         }
     }
 }
 
-pub struct Tree<T> {
+pub struct Tree {
     pub x: f32,
     pub y: f32,
     pub width: f32,
     pub height: f32, 
    
-    pub nodes: Vec<T>,    
+    pub nodes: Vec<Tree>,
 
-    children: Vec<Tree<T>>,
+    children: Option<Vec<Tree>>,
 }
 
-impl<T> Tree<T> {
-    pub fn new() -> Tree<T> {
+impl Tree {
+    pub fn new() -> Tree {
         Tree {
             x: 0f32,
             y: 0f32,
             width: 0f32,
             height: 0f32,
 
-            nodes: Vec::default() as Vec<T>,
-            children: Vec::with_capacity(4),
-        }
-    }
-
-    pub fn blank_child(&mut self, dir: Position, x: f32, y: f32, w: f32, h: f32) {
-        self.children[dir.direction()] = Tree {
-            x, 
-            y, 
-            width: w,
-            height: h,
             nodes: Vec::default(),
-            children: Vec::with_capacity(4),
-        };
-    }
-
-    pub fn add_child(&mut self, value: &Tree<T>) {
-        if self.is_contain(Position::NW, value.x, value.y) {
-            self.children[Position::NW.direction()].add_child(value);
-        } else if self.is_contain(Position::NE, value.x, value.y) {
-            self.children[Position::NE.direction()].add_child(value);
-        } else if self.is_contain(Position::SE, value.x, value.y) {
-            self.children[Position::SE.direction()].add_child(value);
-        } else if self.is_contain(Position::SW, value.x, value.y) {
-            self.children[Position::SW.direction()].add_child(value);
+            children: None,
         }
     }
 
-    fn is_contain(&self, pos: Position, x: f32, y: f32) -> bool {
-        match pos {
-            Position::NW => self.is_nw(x, y),
-            Position::NE => self.is_ne(x, y),
-            Position::SW => self.is_sw(x, y),
-            Position::SE => self.is_se(x, y),
-            _ => false,
+    pub fn add_child(&mut self, value: Tree) {
+        match (self.is_contain(value.x, value.y), &mut self.children) {
+            (Position::NW, Some(ref mut children)) => children[Position::NW.direction()].add_child(value),
+            (Position::NE, Some(ref mut children)) => children[Position::NE.direction()].add_child(value),
+            (Position::SW, Some(ref mut children)) => children[Position::SW.direction()].add_child(value),
+            (Position::SE, Some(ref mut children)) => children[Position::SE.direction()].add_child(value),
+            _ => self.nodes.push(value),
+        }
+    }
+
+    fn is_contain(&self, x: f32, y: f32) -> Position {
+        if self.is_nw(x, y) {
+            Position::NW
+        } else if self.is_nw(x, y) {
+            Position::NE
+        } else if self.is_nw(x, y) {
+            Position::SW
+        } else if self.is_nw(x, y) {
+            Position::SE
+        } else {
+            Position::None
         }
     }
 
