@@ -79,3 +79,26 @@ impl Tree {
         x >= self.x + self.width / 2.0 && x <= self.x + self.width && y >= self.y + self.height / 2.0 && y <= self.y + self.height
     }
 }
+
+mod test {
+    use super::*;
+
+    #[test]
+    fn add_child() {
+        let mut tree = Tree::new();
+        tree.x = 0f32;
+        tree.y = 0f32;
+        tree.width = 10f32;
+        tree.height = 10f32;
+
+        let mut value = Tree::new();
+        value.x = 1f32;
+        value.y = 1f32;
+        tree.width = 1f32;
+        tree.height = 1f32;
+
+        tree.add_child(value);
+
+        assert!(tree.nodes.len() == 1)
+    }
+}
