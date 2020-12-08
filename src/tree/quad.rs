@@ -39,6 +39,18 @@ impl Tree {
         }
     }
 
+    pub fn new_with_divide(self, pos: Position) -> Tree {
+        Tree {
+            x: self.x,
+            y: self.y,
+            width: self.width / 2,
+            height: self.height / 2,
+
+            nodes: Vec::default(),
+            chilren: None,
+        }
+    }
+
     pub fn add_child(&mut self, value: Tree) {
         match (self.is_contain(value.x, value.y), &mut self.children) {
             (Position::NW, Some(ref mut children)) => children[Position::NW.direction()].add_child(value),
@@ -47,6 +59,17 @@ impl Tree {
             (Position::SE, Some(ref mut children)) => children[Position::SE.direction()].add_child(value),
             _ => self.nodes.push(value),
         }
+    }
+
+    pub fn divide_area(&mut self) {
+        if self.children.is_some() { // already divided
+            return ;
+        }
+
+        self.children = Some(
+            vec![
+            ]
+        )
     }
 
     fn is_contain(&self, x: f32, y: f32) -> Position {
