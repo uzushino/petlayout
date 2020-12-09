@@ -43,11 +43,11 @@ impl Tree {
         Tree {
             x: self.x,
             y: self.y,
-            width: self.width / 2,
-            height: self.height / 2,
+            width: self.width / 2f32,
+            height: self.height / 2f32,
 
             nodes: Vec::default(),
-            chilren: None,
+            children: None,
         }
     }
 
