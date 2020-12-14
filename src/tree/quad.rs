@@ -39,12 +39,19 @@ impl Tree {
         }
     }
 
-    pub fn new_with_divide(self, pos: Position) -> Tree {
+    pub fn new_with_divide(other: Tree, pos: Position) -> Tree {
+        let (x, y, width, height) = match pos {
+            Position::NW => (other.x, other.y, other.width / 2.0, other.height / 2.0),
+            Position::NE => (other.x + other.width / 2.0, other.y, other.width, other.height / 2.0),
+            Position::SW => (other.x, other.y + other.height / 2.0, other.width / 2.0, other.height),
+            Position::SE => (other.x + other.width / 2.0, other.y + other.height / 2.0, other.width, other.height),
+        };
+        
         Tree {
-            x: self.x,
-            y: self.y,
-            width: self.width / 2f32,
-            height: self.height / 2f32,
+            x,
+            y,
+            width,
+            height,
 
             nodes: Vec::default(),
             children: None,
@@ -68,6 +75,7 @@ impl Tree {
 
         self.children = Some(
             vec![
+                Tree::
             ]
         )
     }
