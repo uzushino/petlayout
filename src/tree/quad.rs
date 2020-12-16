@@ -1,3 +1,5 @@
+use std::unimplemented;
+
 
 pub enum Position {
     NE, NW, SE, SW, None
@@ -39,16 +41,16 @@ impl Tree {
         }
     }
 
-    pub fn new_with_divide(other: Tree, pos: Position) -> Option<Tree> {
+    pub fn new_with_divide(other: &Tree, pos: Position) -> Tree {
         let (x, y, width, height) = match pos {
             Position::NW => (other.x, other.y, other.width / 2.0, other.height / 2.0),
             Position::NE => (other.x + other.width / 2.0, other.y, other.width, other.height / 2.0),
             Position::SW => (other.x, other.y + other.height / 2.0, other.width / 2.0, other.height),
             Position::SE => (other.x + other.width / 2.0, other.y + other.height / 2.0, other.width, other.height),
-            _ => return None
+            _ => unimplemented!()
         };
         
-        Some(Tree {
+        Tree {
             x,
             y,
             width,
@@ -56,7 +58,7 @@ impl Tree {
 
             nodes: Vec::default(),
             children: None,
-        })
+        }
     }
 
     pub fn add_child(&mut self, value: Tree) {
@@ -76,6 +78,10 @@ impl Tree {
 
         self.children = Some(
             vec![
+                Tree::new_with_divide(self, Position::NW),
+                Tree::new_with_divide(self, Position::NE),
+                Tree::new_with_divide(self, Position::SW),
+                Tree::new_with_divide(self, Position::SE),
             ]
         )
     }
