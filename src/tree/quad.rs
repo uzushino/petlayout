@@ -76,14 +76,22 @@ impl Tree {
             return ;
         }
 
-        self.children = Some(
+        let children = Some(
             vec![
                 Tree::new_with_divide(self, Position::NW),
                 Tree::new_with_divide(self, Position::NE),
                 Tree::new_with_divide(self, Position::SW),
                 Tree::new_with_divide(self, Position::SE),
             ]
-        )
+        );
+
+        let nodes = Vec::default();
+        for &node in self.nodes.iter() {
+            if let pos = node.is_contain(node.x, node.y) {
+                self.children[pos.direction()].add_child(node);
+            }
+        }
+        self.nodes = nodes;
     }
 
     fn is_contain(&self, x: f32, y: f32) -> Position {
